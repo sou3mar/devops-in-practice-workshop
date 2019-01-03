@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pet-web
+  labels:
+    app: pet
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: pet
+    tier: frontend
+  type: LoadBalancer
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: pet-web
+  labels:
+    app: pet
+spec:
+  selector:
+    matchLabels:
+      app: pet
+      tier: frontend
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: pet
+        tier: frontend
+    spec:
+      containers:
+      - image: us.gcr.io/devops-workshop-123/pet-app
+        imagePullPolicy: IfNotPresent
+        name: pet-web
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: mysql
+        - name: PET_DB_DATABASE
+          value: petclinic
+        - name: PET_DB_USER
+          value: petclinic-user
+        - name: PET_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: password
+        ports:
+        - containerPort: 8080
+          name: pet-web
+        livenessProbe:
+          httpGet:
+            path: /manage/health
+            port: pet-web
+          initialDelaySeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /manage/health
+            port: pet-web
+          initialDelaySeconds: 30

@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  pet-app:
+    build:
+      context: .
+      args:
+        JAR_FILE: "./target/spring-petclinic-2.0.0.BUILD-SNAPSHOT.jar"
+    image: pet-app
+    ports:
+      - "8080:8080"
+    links:
+      - database:pet-db
+    environment:
+      SPRING_PROFILES_ACTIVE: "mysql"
+  database:
+    image: mysql:5.7
+    expose:
+      - 3306
+    volumes:
+      - ./data:/var/lib/mysql
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: "petclinic"
+      MYSQL_USER: "petclinic-user"
+      MYSQL_PASSWORD: "S3cr3t"
