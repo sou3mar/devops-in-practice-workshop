@@ -1,21 +1,7 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: pet-web
-  labels:
-    app: pet
-spec:
-  ports:
-    - port: 8080
-  selector:
-    app: pet
-    tier: frontend
-  type: LoadBalancer
----
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: pet-web
+  name: pet-web-canary
   labels:
     app: pet
 spec:
@@ -30,7 +16,7 @@ spec:
       labels:
         app: pet
         tier: frontend
-        track: stable
+        track: canary
     spec:
       containers:
       - image: us.gcr.io/devops-workshop-123/pet-app

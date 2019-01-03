@@ -7,3 +7,4 @@
 * Upgrade gocd chart version
 * Use only one elastic agent profile for all pipelines
 * Wrap GoCD tasks on a script
+* Update instruction for step 13: elastic profile already set
