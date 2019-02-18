@@ -67,7 +67,7 @@ click "NEXT". Then on the next step, use the following configuration:
 
 * Material Type: `Git`
 * URL: Same as before, use the Git URL for your repository
-* Branch: `master`
+* Branch: `tw-feb-19`
 * Blacklist: `pipelines/*`
 * Invert the file filter: Checked
 
@@ -114,7 +114,7 @@ configurator = GoCdConfigurator(HostRestClient(go_server_url))
 pipeline = configurator\
 	.ensure_pipeline_group("sample")\
 	.ensure_replacement_of_pipeline("Meta")\
-	.set_git_material(GitMaterial("https://github.com/dtsato/devops-in-practice-workshop.git", branch="master", ignore_patterns=set(['pipelines/*']), invert_filter="True"))
+	.set_git_material(GitMaterial("https://github.com/dtsato/devops-in-practice-workshop.git", branch="tw-feb-19", ignore_patterns=set(['pipelines/*']), invert_filter="True"))
 stage = pipeline.ensure_stage("update-pipelines")
 job = stage.ensure_job("update-pipelines").set_elastic_profile_id('docker-jdk')
 job.add_task(ExecTask(['pipelines/update.sh']))
@@ -158,7 +158,7 @@ secret_variables = {'GCLOUD_SERVICE_KEY': 'lKD+DoKDGtCsaToW...'}
 pipeline = configurator\
 	.ensure_pipeline_group("sample")\
 	.ensure_replacement_of_pipeline("PetClinic")\
-	.set_git_material(GitMaterial("https://github.com/dtsato/devops-in-practice-workshop.git", branch="master", ignore_patterns=set(['pipelines/*'])))
+	.set_git_material(GitMaterial("https://github.com/dtsato/devops-in-practice-workshop.git", branch="tw-feb-19", ignore_patterns=set(['pipelines/*'])))
 stage = pipeline.ensure_stage("commit")
 job = stage\
     .ensure_job("build-and-publish")\

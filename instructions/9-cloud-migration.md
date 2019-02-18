@@ -126,13 +126,13 @@ resource "google_container_cluster" "cluster" {
   additional_zones = ["us-central1-b"]
   initial_node_count = 1
 
-  min_master_version = "1.10.7-gke.13"
+  min_master_version = "1.11.7-gke.4"
   master_auth {
     username = "admin"
     password = "choose-a-long-password"
   }
 
-  node_version = "1.10.7-gke.13"
+  node_version = "1.11.7-gke.4"
   node_config {
 	  machine_type = "n1-standard-2"
 	  disk_size_gb = "50"
@@ -211,7 +211,7 @@ Terraform will perform the following actions:
       master_auth.0.password:                <sensitive>
       master_auth.0.username:                "admin"
       master_version:                        <computed>
-      min_master_version:                    "1.10.7-gke.13"
+      min_master_version:                    "1.11.7-gke.4"
       monitoring_service:                    "monitoring.googleapis.com"
       name:                                  "devops-workshop-gke"
       network:                               "default"
@@ -230,7 +230,7 @@ Terraform will perform the following actions:
       node_config.0.preemptible:             "false"
       node_config.0.service_account:         <computed>
       node_pool.#:                           <computed>
-      node_version:                          "1.10.7-gke.13"
+      node_version:                          "1.11.7-gke.4"
       private_cluster:                       "false"
       project:                               <computed>
       region:                                <computed>
@@ -263,7 +263,7 @@ google_container_cluster.cluster: Creating...
   master_auth.0.password:                "<sensitive>" => "<sensitive>"
   master_auth.0.username:                "" => "admin"
   master_version:                        "" => "<computed>"
-  min_master_version:                    "" => "1.10.7-gke.13"
+  min_master_version:                    "" => "1.11.7-gke.4"
   monitoring_service:                    "" => "monitoring.googleapis.com"
   name:                                  "" => "devops-workshop-gke"
   network:                               "" => "default"
@@ -282,7 +282,7 @@ google_container_cluster.cluster: Creating...
   node_config.0.preemptible:             "" => "false"
   node_config.0.service_account:         "" => "<computed>"
   node_pool.#:                           "" => "<computed>"
-  node_version:                          "" => "1.10.7-gke.13"
+  node_version:                          "" => "1.11.7-gke.4"
   private_cluster:                       "" => "false"
   project:                               "" => "<computed>"
   region:                                "" => "<computed>"
