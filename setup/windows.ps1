@@ -42,7 +42,7 @@ if (Get-Command kubectl -ErrorAction SilentlyContinue) {
 if (Get-Command minikube -ErrorAction SilentlyContinue) {
   Write-Output "Minikube is already installed!"
 } else {
-  choco install -y minikube --version 0.25.2
+  choco install -y minikube
 }
 
 if (Get-Command terraform -ErrorAction SilentlyContinue) {
