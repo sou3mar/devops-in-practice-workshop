@@ -43,13 +43,13 @@ Now let's search for the GoCD chart and find out details about it using the
 ```shell
 $ helm search -l gocd
 NAME       	CHART VERSION	APP VERSION	DESCRIPTION                                       
-stable/gocd	1.4.3        	18.9.0     	GoCD is an open-source continuous delivery serv...
-stable/gocd	1.4.2        	18.9.0     	GoCD is an open-source continuous delivery serv...
-stable/gocd	1.4.1        	18.9.0     	GoCD is an open-source continuous delivery serv...
+stable/gocd	1.6.6        	19.1.0     	GoCD is an open-source continuous delivery server to mode...
+stable/gocd	1.6.5        	19.1.0     	GoCD is an open-source continuous delivery server to mode...
+stable/gocd	1.6.4        	18.12.0    	GoCD is an open-source continuous delivery server to mode...
 
 ...
-$ helm inspect stable/gocd --version 1.4.3
-appVersion: 18.9.0
+$ helm inspect stable/gocd --version 1.6.6
+appVersion: 19.1.0
 description: GoCD is an open-source continuous delivery server to model and visualize
   complex workflows with ease.
 home: https://www.gocd.org/
@@ -72,7 +72,7 @@ Now we can install the GoCD chart on a `gocd` namespace by running the `helm ins
 command:
 
 ```shell
-$ helm install --name gocd-app --namespace gocd --version 1.4.3 stable/gocd
+$ helm install --name gocd-app --namespace gocd --version 1.6.6 stable/gocd
 NAME:   gocd-app
 LAST DEPLOYED: Fri Oct 12 23:50:43 2018
 NAMESPACE: gocd
