@@ -111,7 +111,6 @@ can create a project for the workshop and name it "DevOps Workshop".
   `sudo` on Linux):
   * `docker pull openjdk:8-jdk-alpine`
   * `docker pull mysql:5.7`
-  * `docker pull dtsato/gomatic`
 2. **Maven Dependencies**: have Maven download all dependencies by running:
   * `./mvnw clean install`
 3. **Minikube VM**: ensure you have the minikube VirtualBox VM image by running:

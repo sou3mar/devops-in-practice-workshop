@@ -15,7 +15,7 @@ sharing, DevOps is showing that developers and system engineers have much to
 learn from each other. Through a series of hands-on exercises, Danilo Sato will
 use a sample web application to demonstrate how to automate its build and
 deployment pipeline, using infrastructure and pipeline as code techniques. You
-will learn how to combine tools such as Docker, Terraform, GoCD, Gomatic, and
+will learn how to combine tools such as Docker, Terraform, GoCD, and
 Kubernetes to create deployment pipelines for your infrastructure, your services,
 and applications. But even if your company is not using any of these tools, we
 will discuss alternative technologies and highlight the patterns and principles
