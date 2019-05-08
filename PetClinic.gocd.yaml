@@ -12,8 +12,8 @@ pipelines:
         auto_update: true
         branch: final-solution
         blacklist:
-        - **/*.gocd.yml
-        - **/*.gocd.yaml
+          - "**/*.gocd.yml"
+          - "**/*.gocd.yaml"
     stages:
     - commit:
         fetch_materials: true
