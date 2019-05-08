@@ -1,4 +1,8 @@
-version: '2'
+version: '3.7'
+
+networks:
+  pet-net:
+    driver: bridge
 
 services:
   pet-app:
@@ -9,14 +13,18 @@ services:
     image: pet-app
     ports:
       - "8080:8080"
-    links:
-      - database:pet-db
+    networks:
+      - pet-net
+    depends_on:
+      - pet-db
     environment:
       SPRING_PROFILES_ACTIVE: "mysql"
-  database:
+  pet-db:
     image: mysql:5.7
     expose:
       - 3306
+    networks:
+      - pet-net
     volumes:
       - ./data:/var/lib/mysql
     environment:
