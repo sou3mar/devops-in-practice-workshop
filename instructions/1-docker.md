@@ -76,7 +76,7 @@ $ docker run --name=pet-app-prod -d -p 8080:8080 pet-app
 The long string returned from that command is the container ID. To check its logs:
 
 ```shell
-$ docker logs -f 11ac55ff100dc3
+$ docker logs -f pet-app-prod
 ```
 
 Notice you only require the initial part of the container ID. You can also check
@@ -96,8 +96,8 @@ Then you should be able to access the application by going to http://localhost:8
 To shutdown, you can stop and remove the container:
 
 ```shell
-$ docker stop 11ac55ff100dc3
-11ac55ff100dc3
-$ docker rm 11ac55ff100dc3
-11ac55ff100dc3
+$ docker stop pet-app-prod
+pet-app-prod
+$ docker rm pet-app-prod
+pet-app-prod
 ```
