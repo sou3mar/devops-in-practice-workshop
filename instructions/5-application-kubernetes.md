@@ -20,7 +20,7 @@ service
 Kubernetes adds environment variables for every active service when launching
 new pods, which allows us to perform service discovery. The relevant variables
 for our MySQL database service are `PET_DB_SERVICE_HOST` and `PET_DB_SERVICE_PORT`,
-so we can change our application's `src/resources/application-mysql.properties`
+so we can change our application's `src/main/resources/application-mysql.properties`
 configuration to use that and other information that will be defined in the
 Kubernetes definition file:
 

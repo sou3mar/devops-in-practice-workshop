@@ -110,7 +110,7 @@ configuration:
 ...
 spec:
   containers:
-  - image: us.gcr.io/devops-workshop-123/pet-app
+  - image: us.gcr.io/devops-workshop-123/pet-app:latest
     imagePullPolicy: IfNotPresent
     name: pet-web
 ...

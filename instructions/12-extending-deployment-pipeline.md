@@ -30,29 +30,18 @@ kubectl apply -f kubernetes/mysql.yml --namespace default
 
 IMAGE_VERSION=${GO_PIPELINE_LABEL:-latest}
 PROJECT_ID=${GCLOUD_PROJECT_ID:-devops-workshop-123}
-echo "Deploying pet-web image version: $WEB_IMAGE_VERSION"
+echo "Deploying pet-web image version: $IMAGE_VERSION"
 
 cat kubernetes/web.yml | sed "s/\(image: \).*$/\1us.gcr.io\/$PROJECT_ID\/pet-app:$IMAGE_VERSION/" | kubectl apply -f - --namespace default
 ```
 
-We also need to add a new role `roles/container.admin` to our service account,
-to be able to deploy to GKE from our GoCD agents:
-
-```shell
-$ gcloud projects add-iam-policy-binding devops-workshop-123 --member serviceAccount:gocd-agent@devops-workshop-123.iam.gserviceaccount.com --role roles/container.admin
-bindings:
-- members:
-  - serviceAccount:gocd-agent@devops-workshop-123.iam.gserviceaccount.com
-  role: roles/container.admin
-...
-```
-
 Now let's configure a new Elastic Agent Profile in GoCD by visiting the "ADMIN"
-menu and clicking on "Elastic Agent Profiles". We can then "Add" a new profile
+menu and clicking on "Elastic Profiles". We can then "+ Elastic Agent Profile"
 with the following configuration:
 
 * Id: `kubectl`
-* Image: `dtsato/gocd-agent-docker-dind-gcloud-kubectl:v18.2.0`
+* Select the "Config Properties" option
+* Image: `dtsato/gocd-agent-docker-dind-gcloud-kubectl:v19.3.0`
 * Privileged: checked
 
 Once the profile is saved, we can configure the new stage of our pipeline, by
@@ -89,8 +78,7 @@ We can go back to the "Tasks" tab and add the other tasks:
   * Command: `bash`
   * Arguments: `-c gcloud container clusters get-credentials $GCLOUD_CLUSTER --zone $GCLOUD_ZONE --project $GCLOUD_PROJECT_ID`
 * Deploy:
-  * Command: `bash`
-  * Arguments: `-c ./deploy.sh`
+  * Command: `./deploy.sh`
 * Cleanup:
   * Command: `bash`
   * Arguments: `-c rm secret.json`

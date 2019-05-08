@@ -16,7 +16,7 @@ instructions if you want to install them manually:
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) 1.9.4+
 * [VirtualBox](https://www.virtualbox.org/wiki/Downloads) 5.2+
 * [Install minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
-0.25.2 (**WARNING: 0.26.1 currently has a bug**)
+0.30.0+
 * [helm](https://github.com/kubernetes/helm/blob/master/docs/install.md) 2.8+
 * [terraform](https://www.terraform.io/intro/getting-started/install.html) 0.11+
 * [Google Cloud SDK tools](https://cloud.google.com/sdk/downloads) 196+
@@ -115,5 +115,5 @@ can create a project for the workshop and name it "DevOps Workshop".
 2. **Maven Dependencies**: have Maven download all dependencies by running:
   * `./mvnw clean install`
 3. **Minikube VM**: ensure you have the minikube VirtualBox VM image by running:
-  * `minikube start --kubernetes-version v1.9.4`
+  * `minikube start --kubernetes-version v1.12.7 --memory 2048`
   * `minikube stop`

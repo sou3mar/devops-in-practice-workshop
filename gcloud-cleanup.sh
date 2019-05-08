@@ -5,7 +5,7 @@ PROJECT_ID=${GCLOUD_PROJECT_ID:-devops-workshop-123}
 
 function deleteGlobalResource {
   RESOURCE=$1
-  for id in $(gcloud compute $RESOURCE list --global --format='get(name)'); do
+  for id in $(gcloud compute $RESOURCE list --global --project=$PROJECT_ID --format='get(name)'); do
     gcloud compute $RESOURCE delete $id --global -q
   done
 }
@@ -13,14 +13,14 @@ function deleteGlobalResource {
 function deleteRegionalResource {
   RESOURCE=$1
   REGION=$2
-  for id in $(gcloud compute $RESOURCE list --filter='region:($REGION)' --format='get(name)'); do
+  for id in $(gcloud compute $RESOURCE list --filter='region:($REGION)' --project=$PROJECT_ID --format='get(name)'); do
     gcloud compute $RESOURCE delete $id --region $REGION -q
   done
 }
 
 function deleteResource {
   RESOURCE=$1
-  for id in $(gcloud compute $RESOURCE list --format='get(name)'); do
+  for id in $(gcloud compute $RESOURCE list --project=$PROJECT_ID --format='get(name)'); do
     gcloud compute $RESOURCE delete $id -q
   done
 }
@@ -41,6 +41,14 @@ function deleteContainerImages {
   done
 }
 
+function deleteDisks {
+  for id_and_zone in $(gcloud compute disks list --project=$PROJECT_ID --format='csv[no-heading](name,zone.basename())'); do
+    id=$(echo $id_and_zone | cut -d',' -f1)
+    zone=$(echo $id_and_zone | cut -d',' -f2)
+    gcloud compute disks delete $id --zone $zone -q
+  done
+}
+
 function destroy {
   set -x
   deleteContainerImages "pet-app"
@@ -54,6 +62,7 @@ function destroy {
   deleteRegionalResource "backend-services" "us-central1"
   deleteResource "health-checks"
   deleteRegionalResource "target-pools" "us-central1"
+  deleteDisks
 }
 
 echo "*****************************************************************"

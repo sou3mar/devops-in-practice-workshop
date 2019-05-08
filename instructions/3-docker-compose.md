@@ -14,7 +14,11 @@ Create a file called `docker-compose.yml` at the root of the project with the
 following content:
 
 ```yaml
-version: '2'
+version: '3.7'
+
+networks:
+  pet-net:
+    driver: bridge
 
 services:
   pet-app:
@@ -25,14 +29,18 @@ services:
     image: pet-app
     ports:
       - "8080:8080"
-    links:
-      - database:pet-db
+    networks:
+      - pet-net
+    depends_on:
+      - pet-db
     environment:
       SPRING_PROFILES_ACTIVE: "mysql"
-  database:
+  pet-db:
     image: mysql:5.7
     expose:
       - 3306
+    networks:
+      - pet-net
     volumes:
       - ./data:/var/lib/mysql
     environment:
@@ -68,11 +76,11 @@ with a single `docker-compose up` command:
 
 ```shell
 $ docker-compose up
-Starting devopsinpracticeworkshop_database_1 ... done
-Recreating devopsinpracticeworkshop_pet-app_1 ... done
-Attaching to devopsinpracticeworkshop_database_1, devopsinpracticeworkshop_pet-app_1
-database_1  | 2018-04-05T21:18:53.544497Z 0 [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
-database_1  | 2018-04-05T21:18:53.560127Z 0 [Note] mysqld (mysqld 5.7.21) starting as process 1 ...
+Creating network "devops-in-practice-workshop_pet-net" with driver "bridge"
+Creating devops-in-practice-workshop_pet-db_1 ... done
+Creating devops-in-practice-workshop_pet-app_1 ... done
+Attaching to devops-in-practice-workshop_pet-db_1, devops-in-practice-workshop_pet-app_1
+pet-db_1   | 2019-05-08T09:22:51.846466Z 0 [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
 
 ...
 ```
@@ -84,7 +92,7 @@ pressing `Ctrl+C` and cleaning up using the `docker-compose down` command:
 
 ```shell
 $ docker-compose down
-Removing devops-in-practice-workshop_pet-app_1  ... done
-Removing devops-in-practice-workshop_database_1 ... done
-Removing network devops-in-practice-workshop_default
+Removing devops-in-practice-workshop_pet-app_1 ... done
+Removing devops-in-practice-workshop_pet-db_1  ... done
+Removing network devops-in-practice-workshop_pet-net
 ```

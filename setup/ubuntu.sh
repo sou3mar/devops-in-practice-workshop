@@ -66,7 +66,7 @@ if hash minikube 2>/dev/null; then
   echo "Minikube is already installed!"
 else
   echo "Installing minikube..."
-  curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.25.2/minikube-linux-amd64
+  curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
   chmod +x minikube
   mv minikube /usr/local/bin/
 fi
@@ -75,7 +75,7 @@ if hash terraform 2>/dev/null; then
   echo "Terraform is already installed!"
 else
   echo "Installing terraform..."
-  curl -Lo terraform.zip https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
+  curl -Lo terraform.zip https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip
   unzip terraform.zip
   mv terraform /usr/local/bin/
   rm terraform.zip

@@ -162,7 +162,6 @@ pipeline = configurator\
 stage = pipeline.ensure_stage("commit")
 job = stage\
     .ensure_job("build-and-publish")\
-    .ensure_artifacts({TestArtifact("target/surefire-reports", "surefire-reports")})\
     .ensure_environment_variables({'MAVEN_OPTS': '-Xmx1024m', 'GCLOUD_PROJECT_ID': 'devops-workshop-123'})\
     .ensure_encrypted_environment_variables(secret_variables)
 job.set_elastic_profile_id('docker-jdk')
@@ -176,7 +175,7 @@ job = stage\
     .ensure_job("deploy")\
     .ensure_environment_variables({'GCLOUD_ZONE': 'us-central1-a', 'GCLOUD_PROJECT_ID': 'devops-workshop-123', 'GCLOUD_CLUSTER': 'devops-workshop-gke'})\
     .ensure_encrypted_environment_variables(secret_variables)
-job.set_elastic_profile_id('docker-kubectl')
+job.set_elastic_profile_id('kubectl')
 job.add_task(ExecTask(['bash', '-c', 'echo $GCLOUD_SERVICE_KEY | base64 -d > secret.json && chmod 600 secret.json']))
 job.add_task(ExecTask(['bash', '-c', 'gcloud auth activate-service-account --key-file secret.json']))
 job.add_task(ExecTask(['bash', '-c', 'gcloud container clusters get-credentials $GCLOUD_CLUSTER --zone $GCLOUD_ZONE --project $GCLOUD_PROJECT_ID']))
