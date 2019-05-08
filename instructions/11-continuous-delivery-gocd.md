@@ -28,6 +28,7 @@ $HELM_HOME has been configured at /Users/dsato/.helm.
 Tiller (the Helm server-side component) has been installed into your Kubernetes Cluster.
 
 Please note: by default, Tiller is deployed with an insecure 'allow unauthenticated users' policy.
+To prevent this, run `helm init` with the --tiller-tls-verify flag.
 For more information on securing your installation see: https://docs.helm.sh/using_helm/#securing-your-helm-installation
 Happy Helming!
 $ helm repo update
@@ -42,14 +43,14 @@ Now let's search for the GoCD chart and find out details about it using the
 
 ```shell
 $ helm search -l gocd
-NAME       	CHART VERSION	APP VERSION	DESCRIPTION                                       
-stable/gocd	1.6.6        	19.1.0     	GoCD is an open-source continuous delivery server to mode...
-stable/gocd	1.6.5        	19.1.0     	GoCD is an open-source continuous delivery server to mode...
-stable/gocd	1.6.4        	18.12.0    	GoCD is an open-source continuous delivery server to mode...
+NAME       	CHART VERSION	APP VERSION	DESCRIPTION                                                 
+stable/gocd	1.9.1        	19.3.0     	GoCD is an open-source continuous delivery server to mode...
+stable/gocd	1.9.0        	19.3.0     	GoCD is an open-source continuous delivery server to mode...
+stable/gocd	1.8.1        	19.2.0     	GoCD is an open-source continuous delivery server to mode...
 
 ...
-$ helm inspect stable/gocd --version 1.6.6
-appVersion: 19.1.0
+$ helm inspect stable/gocd --version 1.9.1
+appVersion: 19.3.0
 description: GoCD is an open-source continuous delivery server to model and visualize
   complex workflows with ease.
 home: https://www.gocd.org/
@@ -72,16 +73,16 @@ Now we can install the GoCD chart on a `gocd` namespace by running the `helm ins
 command:
 
 ```shell
-$ helm install --name gocd-app --namespace gocd --version 1.6.6 stable/gocd
+$ helm install --name gocd-app --namespace gocd --version 1.9.1 stable/gocd
 NAME:   gocd-app
-LAST DEPLOYED: Fri Oct 12 23:50:43 2018
+LAST DEPLOYED: Wed May  8 13:38:34 2019
 NAMESPACE: gocd
 STATUS: DEPLOYED
 
 RESOURCES:
-==> v1/ServiceAccount
-NAME      SECRETS  AGE
-gocd-app  1        1s
+==> v1/ConfigMap
+NAME            DATA  AGE
+gocd-app        1     1s
 
 ...
 ```
@@ -109,38 +110,15 @@ external IP above - in this case http://35.190.56.218.
 
 GoCD comes configured with a sample "Hello World" pipeline. For our pipeline, we
 need to create an Elastic Agent profile that will be used to launch jobs in our
-pipeline. Click on the "ADMIN" tab and select "Elastic Agent Profiles", then
-click the "Add" button and set the following configuration:
+pipeline. Click on the "ADMIN" tab and select "Elastic Profiles", then
+click the "+ Elastic Agent Profile" button and set the following configuration:
 
 * Id: `docker-jdk`
-* Image: `dtsato/gocd-agent-docker-dind-jdk:v18.2.0`
+* Select the "Config Properties" option
+* Image: `dtsato/gocd-agent-docker-dind-jdk:v19.3.0`
 * Privileged: check
 
 Then click "Save".
-
-In order to publish the Docker image to Google Container Registry, we need to
-create a service account that will be used by the GoCD Agents when running
-authenticated `docker` commands. Run these commands on your machine to create
-the account and grant the appropriate role, replacing the project ID accordingly:
-
-```shell
-$ gcloud iam service-accounts create gocd-agent
-Created service account [gocd-agent].
-$ gcloud projects add-iam-policy-binding devops-workshop-123 --member serviceAccount:gocd-agent@devops-workshop-123.iam.gserviceaccount.com --role roles/storage.admin
-bindings:
-- members:
-  - serviceAccount:service-190704809516@container-engine-robot.iam.gserviceaccount.com
-...
-```
-
-Then we need to fetch the service account private key. *DANGER: make sure you
-save this key safely and don't commit to the repository, you won't be able to
-fetch it later!* Run the `gcloud` command replacing the project ID accordingly:
-
-```shell
-$ gcloud iam service-accounts keys create ~/key.json --iam-account gocd-agent@devops-workshop-123.iam.gserviceaccount.com
-created key [f6aa0b2bfd27caa51d72edea2a27e754a476c1e0] of type [json] as [/Users/dsato/key.json] for [gocd-agent@devops-workshop-123.iam.gserviceaccount.com]
-```
 
 Now we can create our application pipeline! Clicking on the "ADMIN" tab and
 selecting "Pipelines" takes us to the pipeline admin screen. Clicking on "Create
@@ -198,13 +176,8 @@ project ID):
 * Secure Variables:
   * `GCLOUD_SERVICE_KEY=[...]`
 
-Replace the project ID, and for the `GCLOUD_SERVICE_KEY` run the following command
-and copy/paste the output into the secure variable:
-
-```shell
-$ cat ~/key.json | base64
-ewogICJ0eXBlIjogInNlcnZpY2VfYW...
-```
+Replace the project ID, and for the `GCLOUD_SERVICE_KEY` use the output we saved
+from Exercise 9 (Terraform apply).
 
 After we click "SAVE", go back to the "Job Settings" tab and configure the
 Elastic Profile Id field to use the `docker-jdk` profile.
