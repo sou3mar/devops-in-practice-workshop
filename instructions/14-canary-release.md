@@ -10,7 +10,7 @@
 * Create a `web-canary.yml` kubernetes definition to implement canary releases
 * Update the `deploy.sh` script to deploy the canary release only
 * Create a `complete-canary.sh` script to complete the canary release rollout
-* Extend the PetClinic pipeline (using GoMatic) to add a new stage with a manual
+* Extend the PetClinic pipeline to add a new stage with a manual
 approval to complete the canary release using the above scripts
 
 ## Step by Step Instructions
@@ -129,32 +129,54 @@ Don't forget to make the script executable:
 $ chmod a+x complete-canary.sh
 ```
 
-Finally, we can update our `pipelines/pet_clinic_pipeline.py` script to add a
-new manual stage and job to execute the `complete_canary.sh` script, after the
-definition of the `deploy` stage:
+Finally, we can update our `PetClinic.gocd.yaml` pipeline configuration file to
+add a new manual stage and job to execute the `complete_canary.sh` script, after
+the definition of the `deploy` stage:
 
-```python
+```yaml
 ...
 
-stage = pipeline.ensure_stage("approve-canary")
-stage.set_has_manual_approval()
-job = stage\
-	.ensure_job("complete-canary")\
-    .ensure_environment_variables({'GCLOUD_ZONE': 'us-central1-a', 'GCLOUD_PROJECT_ID': 'devops-workshop-123', 'GCLOUD_CLUSTER': 'devops-workshop-gke'})\
-    .ensure_encrypted_environment_variables(secret_variables)
-job.set_elastic_profile_id('kubectl')
-job.add_task(ExecTask(['bash', '-c', 'echo $GCLOUD_SERVICE_KEY | base64 -d > secret.json && chmod 600 secret.json']))
-job.add_task(ExecTask(['bash', '-c', 'gcloud auth activate-service-account --key-file secret.json']))
-job.add_task(ExecTask(['bash', '-c', 'gcloud container clusters get-credentials $GCLOUD_CLUSTER --zone $GCLOUD_ZONE --project $GCLOUD_PROJECT_ID']))
-job.add_task(ExecTask(['bash', '-c', './complete-canary.sh']))
-job.add_task(ExecTask(['bash', '-c', 'rm secret.json']))
-
-configurator.save_updated_config()
+- approve-canary:
+    fetch_materials: true
+    keep_artifacts: false
+    clean_workspace: false
+    approval:
+      type: manual
+    jobs:
+      complete-canary:
+        timeout: 0
+        elastic_profile_id: kubectl
+        tasks:
+        - exec:
+            arguments:
+            - -c
+            - echo $GCLOUD_SERVICE_KEY | base64 -d > secret.json && chmod 600 secret.json
+            command: bash
+            run_if: passed
+        - exec:
+            arguments:
+            - -c
+            - gcloud auth activate-service-account --key-file secret.json
+            command: bash
+            run_if: passed
+        - exec:
+            arguments:
+            - -c
+            - gcloud container clusters get-credentials $GCLOUD_CLUSTER --zone $GCLOUD_ZONE --project $GCLOUD_PROJECT_ID
+            command: bash
+            run_if: passed
+        - exec:
+            command: ./complete-canary.sh
+            run_if: passed
+        - exec:
+            arguments:
+            - -c
+            - rm secret.json
+            command: bash
+            run_if: passed
 ```
 
-Commit and push the changes to the pipeline definition and wait until GoCD is
-updated. Once the pipeline is updated with the new stage, go ahead and commit and
-push the other remaining changes to the kubernetes files and deployment scripts.
-This should trigger the "PetClinic" pipeline and you should see it deploy the
-new version as a canary release. Then you can test a manual approval to complete
-the release.
+Commit and push the changes and wait until GoCD is updated. Once the pipeline is
+updated with the new stage, it will trigger a new execution.You should see it
+deploy the new version as a canary release. Then you can test a manual approval
+to complete the release.
