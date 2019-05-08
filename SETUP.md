@@ -115,5 +115,5 @@ can create a project for the workshop and name it "DevOps Workshop".
 2. **Maven Dependencies**: have Maven download all dependencies by running:
   * `./mvnw clean install`
 3. **Minikube VM**: ensure you have the minikube VirtualBox VM image by running:
-  * `minikube start --memory 4096`
+  * `minikube start --kubernetes-version v1.12.7 --memory 2048`
   * `minikube stop`
