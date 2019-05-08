@@ -1,4 +1,4 @@
-format_version: 3
+format_version: 4
 pipelines:
   PetClinic:
     group: sample
@@ -12,8 +12,8 @@ pipelines:
         auto_update: true
         branch: final-solution
         blacklist:
-          - **/*.gocd.yml
-          - **/*.gocd.yaml
+        - **/*.gocd.yml
+        - **/*.gocd.yaml
     stages:
     - commit:
         fetch_materials: true
