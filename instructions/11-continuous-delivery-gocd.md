@@ -128,7 +128,7 @@ page.
 
 We will configure our material type to use a "Git" repository, point it to
 your Github repository URL and branch - in this case
-https://github.com/dtsato/devops-in-practice-workshop.git and `master`. You can
+https://github.com/dtsato/devops-in-practice-workshop.git and `devops-east-19`. You can
 test the connection is configured properly by clicking the "CHECK CONNECTION"
 button. If everything is OK, you can click "NEXT" to move to the final page.
 
@@ -188,7 +188,7 @@ changes to your GitHub repository:
 ```shell
 $ git add -A .
 $ git commit -m"Initial commit for pipeline"
-$ git push origin master
+$ git push origin devops-east-19
 ```
 
 Then we can test executing our pipeline by un-pausing it.

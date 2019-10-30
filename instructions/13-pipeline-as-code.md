@@ -40,7 +40,7 @@ the "Add" button and create the new configuration repository:
 * Material type: `Git`
 * Config repository ID: `sample`
 * URL: Same as before, use the Git URL for your repository
-* Branch: `master`
+* Branch: `devops-east-19`
 
 Once again, you can test by clicking on "Test Connection" before proceeding
 with clicking "Save".
