@@ -51,7 +51,7 @@ if hash minikube 2>/dev/null; then
   echo "Minikube is already installed!"
 else
   echo "Installing minikube..."
-  brew cask install minikube
+  brew install minikube
 fi
 
 if hash terraform 2>/dev/null; then
