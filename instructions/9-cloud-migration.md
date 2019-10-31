@@ -11,7 +11,7 @@
 
 * Add Terraform configuration files to a new `terraform` folder at the root of
 the project
-* Create a High Availability GKE cluster version `1.12.7-gke.10` across 2 zones in
+* Create a High Availability GKE cluster version `1.12.10-gke.15` across 2 zones in
 the `us-central1` region using 1 node per zone with instance type `n1-standard-2`
 (2 vCPUs, 7.5Gb memory)
 * Enable logging and monitoring to be sent to Stackdriver
@@ -120,7 +120,7 @@ variable "gcp_project_id" {
 }
 
 variable "kubernetes_version" {
-  default = "1.12.7-gke.10"
+  default = "1.12.10-gke.15"
 }
 
 provider "google" {
@@ -263,7 +263,7 @@ Terraform will perform the following actions:
       master_auth.0.password:                <sensitive>
       master_auth.0.username:                "admin"
       master_version:                        <computed>
-      min_master_version:                    "1.12.7-gke.10"
+      min_master_version:                    "1.12.10-gke.15"
       monitoring_service:                    "monitoring.googleapis.com"
       name:                                  "devops-workshop-gke"
       network:                               "default"
@@ -285,7 +285,7 @@ Terraform will perform the following actions:
       node_config.0.service_account:         <computed>
       node_locations.#:                      <computed>
       node_pool.#:                           <computed>
-      node_version:                          "1.12.7-gke.10"
+      node_version:                          "1.12.10-gke.15"
       project:                               <computed>
       region:                                <computed>
       zone:                                  "us-central1-a"
@@ -366,7 +366,7 @@ google_container_cluster.cluster: Creating...
   master_auth.0.password:                "<sensitive>" => "<sensitive>"
   master_auth.0.username:                "" => "admin"
   master_version:                        "" => "<computed>"
-  min_master_version:                    "" => "1.12.7-gke.10"
+  min_master_version:                    "" => "1.12.10-gke.15"
   monitoring_service:                    "" => "monitoring.googleapis.com"
   name:                                  "" => "devops-workshop-gke"
   network:                               "" => "default"
@@ -388,7 +388,7 @@ google_container_cluster.cluster: Creating...
   node_config.0.service_account:         "" => "<computed>"
   node_locations.#:                      "" => "<computed>"
   node_pool.#:                           "" => "<computed>"
-  node_version:                          "" => "1.12.7-gke.10"
+  node_version:                          "" => "1.12.10-gke.15"
   project:                               "" => "<computed>"
   region:                                "" => "<computed>"
   zone:                                  "" => "us-central1-a"

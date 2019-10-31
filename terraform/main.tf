@@ -3,7 +3,7 @@ variable "gcp_project_id" {
 }
 
 variable "kubernetes_version" {
-  default = "1.12.7-gke.10"
+  default = "1.12.10-gke.15"
 }
 
 provider "google" {
@@ -13,8 +13,8 @@ provider "google" {
 
 resource "google_container_cluster" "cluster" {
   name = "devops-workshop-gke"
-  zone = "us-central1-a"
-  additional_zones = ["us-central1-b"]
+  location = "us-central1-a"
+  node_locations = ["us-central1-b"]
   initial_node_count = 1
 
   min_master_version = "${var.kubernetes_version}"
