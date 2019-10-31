@@ -120,13 +120,13 @@ We need to rebuild our image using the Docker daemon inside of minikube:
 $ eval $(minikube docker-env)
 $ docker build --tag=pet-app --build-arg JAR_FILE=target/spring-petclinic-2.0.0.BUILD-SNAPSHOT.jar .
 Sending build context to Docker daemon  270.6MB
-Step 1/4 : FROM openjdk:8-jdk-alpine
+Step 1/4 : FROM openjdk:11-oracle
 8-jdk-alpine: Pulling from library/openjdk
 ff3a5c916c92: Already exists
 5de5f69f42d7: Pull complete
 fd869c8b9b59: Pull complete
 Digest: sha256:4cd17a64b67df1a929a9c6dedf513afcdc48f3ca0b7fddee6489d0246a14390b
-Status: Downloaded newer image for openjdk:8-jdk-alpine
+Status: Downloaded newer image for openjdk:11-oracle
  ---> 224765a6bdbe
 Step 2/4 : ARG JAR_FILE
  ---> Running in 99e39c8f3b87

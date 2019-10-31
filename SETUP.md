@@ -10,7 +10,7 @@ connectivity.
 These are the tools required for the workshop and the links for installation
 instructions if you want to install them manually:
 
-* [Java](https://java.com/en/download/)
+* [Java](https://java.com/en/download/) 11+
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 * [Docker](https://docs.docker.com/install/) 18+
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) 1.9.4+
@@ -109,7 +109,7 @@ can create a project for the workshop and name it "DevOps Workshop".
 
 1. **Docker Images**: download the following Docker images by running (use
   `sudo` on Linux):
-  * `docker pull openjdk:8-jdk-alpine`
+  * `docker pull openjdk:11-oracle`
   * `docker pull mysql:5.7`
 2. **Maven Dependencies**: have Maven download all dependencies by running:
   * `./mvnw clean install`

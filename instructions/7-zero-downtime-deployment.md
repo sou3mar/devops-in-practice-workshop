@@ -48,7 +48,7 @@ Rebuild the Docker image, specifying the `pet-app:step-7` versioned tag:
 ```shell
 $ docker build --tag=pet-app:step-7 --build-arg JAR_FILE=target/spring-petclinic-2.0.0.BUILD-SNAPSHOT.jar .
 Sending build context to Docker daemon  270.7MB
-Step 1/4 : FROM openjdk:8-jdk-alpine
+Step 1/4 : FROM openjdk:11-oracle
  ---> 224765a6bdbe
 Step 2/4 : ARG JAR_FILE
  ---> Using cache

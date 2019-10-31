@@ -56,7 +56,7 @@ Then you can use `docker-compose build` to rebuild the application container:
 $ docker-compose build
 database uses an image, skipping
 Building pet-app
-Step 1/4 : FROM openjdk:8-jdk-alpine
+Step 1/4 : FROM openjdk:11-oracle
  ---> 224765a6bdbe
 Step 2/4 : ARG JAR_FILE
  ---> Using cache
