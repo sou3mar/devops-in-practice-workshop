@@ -11,7 +11,7 @@
 
 * Add Terraform configuration files to a new `terraform` folder at the root of
 the project
-* Create a High Availability GKE cluster version `1.12.7-gke.10` across 2 zones in
+* Create a High Availability GKE cluster version `1.12.10-gke.15` across 2 zones in
 the `us-central1` region using 1 node per zone with instance type `n1-standard-2`
 (2 vCPUs, 7.5Gb memory)
 * Enable logging and monitoring to be sent to Stackdriver
@@ -120,7 +120,7 @@ variable "gcp_project_id" {
 }
 
 variable "kubernetes_version" {
-  default = "1.12.7-gke.10"
+  default = "1.12.10-gke.15"
 }
 
 provider "google" {
@@ -130,8 +130,8 @@ provider "google" {
 
 resource "google_container_cluster" "cluster" {
   name = "devops-workshop-gke"
-  zone = "us-central1-a"
-  additional_zones = ["us-central1-b"]
+  location = "us-central1-a"
+  node_locations = ["us-central1-b"]
   initial_node_count = 1
 
   min_master_version = "${var.kubernetes_version}"
@@ -193,9 +193,9 @@ Now let's initialize Terraform configuration and fetch the necessary provider:
 ```shell
 $ terraform init terraform/
 
+Initializing the backend...
+
 Initializing provider plugins...
-- Checking for available provider plugins on https://releases.hashicorp.com...
-- Downloading plugin for provider "google" (2.6.0)...
 
 The following providers do not have any version constraints in configuration,
 so the latest version was installed.
@@ -205,7 +205,7 @@ changes, it is recommended to add version = "..." constraints to the
 corresponding provider blocks in configuration, with the constraint strings
 suggested below.
 
-* provider.google: version = "~> 2.6"
+* provider.google: version = "~> 2.18"
 
 Terraform has been successfully initialized!
 
@@ -224,110 +224,206 @@ the `terraform apply` command (this can take a few minutes):
 ```shell
 $ terraform apply terraform/
 
-Warning: google_container_cluster.cluster: "additional_zones": [DEPRECATED] Use node_locations instead
-
-
-
-Warning: google_container_cluster.cluster: "zone": [DEPRECATED] Use location instead
-
-
-
-
 An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
   + create
 
 Terraform will perform the following actions:
 
-  + google_container_cluster.cluster
-      id:                                    <computed>
-      additional_zones.#:                    "1"
-      additional_zones.114014501:            "us-central1-b"
-      addons_config.#:                       <computed>
-      cluster_autoscaling.#:                 <computed>
-      cluster_ipv4_cidr:                     <computed>
-      enable_binary_authorization:           <computed>
-      enable_kubernetes_alpha:               "false"
-      enable_legacy_abac:                    "false"
-      enable_tpu:                            <computed>
-      endpoint:                              <computed>
-      initial_node_count:                    "1"
-      instance_group_urls.#:                 <computed>
-      ip_allocation_policy.#:                <computed>
-      location:                              <computed>
-      logging_service:                       "logging.googleapis.com"
-      master_auth.#:                         "1"
-      master_auth.0.client_certificate:      <computed>
-      master_auth.0.client_key:              <computed>
-      master_auth.0.cluster_ca_certificate:  <computed>
-      master_auth.0.password:                <sensitive>
-      master_auth.0.username:                "admin"
-      master_version:                        <computed>
-      min_master_version:                    "1.12.7-gke.10"
-      monitoring_service:                    "monitoring.googleapis.com"
-      name:                                  "devops-workshop-gke"
-      network:                               "default"
-      network_policy.#:                      <computed>
-      node_config.#:                         "1"
-      node_config.0.disk_size_gb:            "50"
-      node_config.0.disk_type:               <computed>
-      node_config.0.guest_accelerator.#:     <computed>
-      node_config.0.image_type:              <computed>
-      node_config.0.local_ssd_count:         <computed>
-      node_config.0.machine_type:            "n1-standard-2"
-      node_config.0.metadata.%:              <computed>
-      node_config.0.oauth_scopes.#:          "4"
-      node_config.0.oauth_scopes.1277378754: "https://www.googleapis.com/auth/monitoring"
-      node_config.0.oauth_scopes.1328717722: "https://www.googleapis.com/auth/devstorage.read_write"
-      node_config.0.oauth_scopes.172152165:  "https://www.googleapis.com/auth/logging.write"
-      node_config.0.oauth_scopes.299962681:  "https://www.googleapis.com/auth/compute"
-      node_config.0.preemptible:             "false"
-      node_config.0.service_account:         <computed>
-      node_locations.#:                      <computed>
-      node_pool.#:                           <computed>
-      node_version:                          "1.12.7-gke.10"
-      project:                               <computed>
-      region:                                <computed>
-      zone:                                  "us-central1-a"
+  # google_container_cluster.cluster will be created
+  + resource "google_container_cluster" "cluster" {
+      + additional_zones            = (known after apply)
+      + cluster_autoscaling         = (known after apply)
+      + cluster_ipv4_cidr           = (known after apply)
+      + default_max_pods_per_node   = (known after apply)
+      + enable_binary_authorization = (known after apply)
+      + enable_kubernetes_alpha     = false
+      + enable_legacy_abac          = false
+      + enable_tpu                  = (known after apply)
+      + endpoint                    = (known after apply)
+      + id                          = (known after apply)
+      + initial_node_count          = 1
+      + instance_group_urls         = (known after apply)
+      + ip_allocation_policy        = (known after apply)
+      + location                    = "us-central1-a"
+      + logging_service             = "logging.googleapis.com"
+      + master_version              = (known after apply)
+      + min_master_version          = "1.12.10-gke.15"
+      + monitoring_service          = "monitoring.googleapis.com"
+      + name                        = "devops-workshop-gke"
+      + network                     = "default"
+      + node_locations              = [
+          + "us-central1-b",
+        ]
+      + node_version                = "1.12.10-gke.15"
+      + project                     = (known after apply)
+      + region                      = (known after apply)
+      + services_ipv4_cidr          = (known after apply)
+      + subnetwork                  = (known after apply)
+      + zone                        = (known after apply)
 
-  + google_project_iam_binding.gocd_agent_account_container_iam
-      id:                                    <computed>
-      etag:                                  <computed>
-      members.#:                             "1"
-      members.1333262347:                    "serviceAccount:gocd-agent@devops-workshop-123.iam.gserviceaccount.com"
-      project:                               "devops-workshop-123"
-      role:                                  "roles/container.admin"
+      + addons_config {
+          + horizontal_pod_autoscaling {
+              + disabled = (known after apply)
+            }
 
-  + google_service_account.gocd_agent_svc_account
-      id:                                    <computed>
-      account_id:                            "gocd-agent"
-      email:                                 <computed>
-      name:                                  <computed>
-      project:                               <computed>
-      unique_id:                             <computed>
+          + http_load_balancing {
+              + disabled = (known after apply)
+            }
 
-  + google_service_account_key.gocd_agent_svc_account_key
-      id:                                    <computed>
-      key_algorithm:                         "KEY_ALG_RSA_2048"
-      name:                                  <computed>
-      private_key:                           <computed>
-      private_key_encrypted:                 <computed>
-      private_key_fingerprint:               <computed>
-      private_key_type:                      "TYPE_GOOGLE_CREDENTIALS_FILE"
-      public_key:                            <computed>
-      public_key_type:                       "TYPE_X509_PEM_FILE"
-      service_account_id:                    "${google_service_account.gocd_agent_svc_account.name}"
-      valid_after:                           <computed>
-      valid_before:                          <computed>
+          + kubernetes_dashboard {
+              + disabled = (known after apply)
+            }
 
-  + google_storage_bucket_iam_binding.gocd_agent_account_registry_iam
-      id:                                    <computed>
-      bucket:                                "us.artifacts.devops-workshop-123.appspot.com"
-      etag:                                  <computed>
-      members.#:                             "1"
-      members.1333262347:                    "serviceAccount:gocd-agent@devops-workshop-123.iam.gserviceaccount.com"
-      role:                                  "roles/storage.admin"
+          + network_policy_config {
+              + disabled = (known after apply)
+            }
+        }
 
+      + master_auth {
+          + client_certificate     = (known after apply)
+          + client_key             = (sensitive value)
+          + cluster_ca_certificate = (known after apply)
+          + password               = (sensitive value)
+          + username               = "admin"
+
+          + client_certificate_config {
+              + issue_client_certificate = (known after apply)
+            }
+        }
+
+      + network_policy {
+          + enabled  = (known after apply)
+          + provider = (known after apply)
+        }
+
+      + node_config {
+          + disk_size_gb      = 50
+          + disk_type         = (known after apply)
+          + guest_accelerator = (known after apply)
+          + image_type        = (known after apply)
+          + labels            = (known after apply)
+          + local_ssd_count   = (known after apply)
+          + machine_type      = "n1-standard-2"
+          + metadata          = (known after apply)
+          + oauth_scopes      = [
+              + "https://www.googleapis.com/auth/compute",
+              + "https://www.googleapis.com/auth/devstorage.read_write",
+              + "https://www.googleapis.com/auth/logging.write",
+              + "https://www.googleapis.com/auth/monitoring",
+            ]
+          + preemptible       = false
+          + service_account   = (known after apply)
+
+          + shielded_instance_config {
+              + enable_integrity_monitoring = (known after apply)
+              + enable_secure_boot          = (known after apply)
+            }
+        }
+
+      + node_pool {
+          + initial_node_count  = (known after apply)
+          + instance_group_urls = (known after apply)
+          + max_pods_per_node   = (known after apply)
+          + name                = (known after apply)
+          + name_prefix         = (known after apply)
+          + node_count          = (known after apply)
+          + version             = (known after apply)
+
+          + autoscaling {
+              + max_node_count = (known after apply)
+              + min_node_count = (known after apply)
+            }
+
+          + management {
+              + auto_repair  = (known after apply)
+              + auto_upgrade = (known after apply)
+            }
+
+          + node_config {
+              + disk_size_gb      = (known after apply)
+              + disk_type         = (known after apply)
+              + guest_accelerator = (known after apply)
+              + image_type        = (known after apply)
+              + labels            = (known after apply)
+              + local_ssd_count   = (known after apply)
+              + machine_type      = (known after apply)
+              + metadata          = (known after apply)
+              + min_cpu_platform  = (known after apply)
+              + oauth_scopes      = (known after apply)
+              + preemptible       = (known after apply)
+              + service_account   = (known after apply)
+              + tags              = (known after apply)
+
+              + sandbox_config {
+                  + sandbox_type = (known after apply)
+                }
+
+              + shielded_instance_config {
+                  + enable_integrity_monitoring = (known after apply)
+                  + enable_secure_boot          = (known after apply)
+                }
+
+              + taint {
+                  + effect = (known after apply)
+                  + key    = (known after apply)
+                  + value  = (known after apply)
+                }
+
+              + workload_metadata_config {
+                  + node_metadata = (known after apply)
+                }
+            }
+        }
+    }
+
+  # google_project_iam_binding.gocd_agent_account_container_iam will be created
+  + resource "google_project_iam_binding" "gocd_agent_account_container_iam" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "serviceAccount:gocd-agent@devops-workshop-123.iam.gserviceaccount.com",
+        ]
+      + project = "devops-workshop-123"
+      + role    = "roles/container.admin"
+    }
+
+  # google_service_account.gocd_agent_svc_account will be created
+  + resource "google_service_account" "gocd_agent_svc_account" {
+      + account_id = "gocd-agent"
+      + email      = (known after apply)
+      + id         = (known after apply)
+      + name       = (known after apply)
+      + project    = (known after apply)
+      + unique_id  = (known after apply)
+    }
+
+  # google_service_account_key.gocd_agent_svc_account_key will be created
+  + resource "google_service_account_key" "gocd_agent_svc_account_key" {
+      + id                      = (known after apply)
+      + key_algorithm           = "KEY_ALG_RSA_2048"
+      + name                    = (known after apply)
+      + private_key             = (sensitive value)
+      + private_key_encrypted   = (known after apply)
+      + private_key_fingerprint = (known after apply)
+      + private_key_type        = "TYPE_GOOGLE_CREDENTIALS_FILE"
+      + public_key              = (known after apply)
+      + public_key_type         = "TYPE_X509_PEM_FILE"
+      + service_account_id      = (known after apply)
+      + valid_after             = (known after apply)
+      + valid_before            = (known after apply)
+    }
+
+  # google_storage_bucket_iam_binding.gocd_agent_account_registry_iam will be created
+  + resource "google_storage_bucket_iam_binding" "gocd_agent_account_registry_iam" {
+      + bucket  = "us.artifacts.devops-workshop-123.appspot.com"
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "serviceAccount:gocd-agent@devops-workshop-123.iam.gserviceaccount.com",
+        ]
+      + role    = "roles/storage.admin"
+    }
 
 Plan: 5 to add, 0 to change, 0 to destroy.
 
@@ -338,109 +434,42 @@ Do you want to perform these actions?
   Enter a value: yes
 
 google_service_account.gocd_agent_svc_account: Creating...
-  account_id: "" => "gocd-agent"
-  email:      "" => "<computed>"
-  name:       "" => "<computed>"
-  project:    "" => "<computed>"
-  unique_id:  "" => "<computed>"
 google_container_cluster.cluster: Creating...
-  additional_zones.#:                    "" => "1"
-  additional_zones.114014501:            "" => "us-central1-b"
-  addons_config.#:                       "" => "<computed>"
-  cluster_autoscaling.#:                 "" => "<computed>"
-  cluster_ipv4_cidr:                     "" => "<computed>"
-  enable_binary_authorization:           "" => "<computed>"
-  enable_kubernetes_alpha:               "" => "false"
-  enable_legacy_abac:                    "" => "false"
-  enable_tpu:                            "" => "<computed>"
-  endpoint:                              "" => "<computed>"
-  initial_node_count:                    "" => "1"
-  instance_group_urls.#:                 "" => "<computed>"
-  ip_allocation_policy.#:                "" => "<computed>"
-  location:                              "" => "<computed>"
-  logging_service:                       "" => "logging.googleapis.com"
-  master_auth.#:                         "" => "1"
-  master_auth.0.client_certificate:      "" => "<computed>"
-  master_auth.0.client_key:              "<sensitive>" => "<sensitive>"
-  master_auth.0.cluster_ca_certificate:  "" => "<computed>"
-  master_auth.0.password:                "<sensitive>" => "<sensitive>"
-  master_auth.0.username:                "" => "admin"
-  master_version:                        "" => "<computed>"
-  min_master_version:                    "" => "1.12.7-gke.10"
-  monitoring_service:                    "" => "monitoring.googleapis.com"
-  name:                                  "" => "devops-workshop-gke"
-  network:                               "" => "default"
-  network_policy.#:                      "" => "<computed>"
-  node_config.#:                         "" => "1"
-  node_config.0.disk_size_gb:            "" => "50"
-  node_config.0.disk_type:               "" => "<computed>"
-  node_config.0.guest_accelerator.#:     "" => "<computed>"
-  node_config.0.image_type:              "" => "<computed>"
-  node_config.0.local_ssd_count:         "" => "<computed>"
-  node_config.0.machine_type:            "" => "n1-standard-2"
-  node_config.0.metadata.%:              "" => "<computed>"
-  node_config.0.oauth_scopes.#:          "" => "4"
-  node_config.0.oauth_scopes.1277378754: "" => "https://www.googleapis.com/auth/monitoring"
-  node_config.0.oauth_scopes.1328717722: "" => "https://www.googleapis.com/auth/devstorage.read_write"
-  node_config.0.oauth_scopes.172152165:  "" => "https://www.googleapis.com/auth/logging.write"
-  node_config.0.oauth_scopes.299962681:  "" => "https://www.googleapis.com/auth/compute"
-  node_config.0.preemptible:             "" => "false"
-  node_config.0.service_account:         "" => "<computed>"
-  node_locations.#:                      "" => "<computed>"
-  node_pool.#:                           "" => "<computed>"
-  node_version:                          "" => "1.12.7-gke.10"
-  project:                               "" => "<computed>"
-  region:                                "" => "<computed>"
-  zone:                                  "" => "us-central1-a"
-google_service_account.gocd_agent_svc_account: Creation complete after 3s (ID: projects/devops-workshop-123/serviceAcc...s-workshop-123.iam.gserviceaccount.com)
-google_project_iam_binding.gocd_agent_account_container_iam: Creating...
-  etag:               "" => "<computed>"
-  members.#:          "" => "1"
-  members.1333262347: "" => "serviceAccount:gocd-agent@devops-workshop-123.iam.gserviceaccount.com"
-  project:            "" => "devops-workshop-123"
-  role:               "" => "roles/container.admin"
-google_service_account_key.gocd_agent_svc_account_key: Creating...
-  key_algorithm:           "" => "KEY_ALG_RSA_2048"
-  name:                    "" => "<computed>"
-  private_key:             "<sensitive>" => "<sensitive>"
-  private_key_encrypted:   "" => "<computed>"
-  private_key_fingerprint: "" => "<computed>"
-  private_key_type:        "" => "TYPE_GOOGLE_CREDENTIALS_FILE"
-  public_key:              "" => "<computed>"
-  public_key_type:         "" => "TYPE_X509_PEM_FILE"
-  service_account_id:      "" => "projects/devops-workshop-123/serviceAccounts/gocd-agent@devops-workshop-123.iam.gserviceaccount.com"
-  valid_after:             "" => "<computed>"
-  valid_before:            "" => "<computed>"
+google_service_account.gocd_agent_svc_account: Creation complete after 2s [id=projects/devops-workshop-123/serviceAccounts/gocd-agent@devops-workshop-123.iam.gserviceaccount.com]
 google_storage_bucket_iam_binding.gocd_agent_account_registry_iam: Creating...
-  bucket:             "" => "us.artifacts.devops-workshop-123.appspot.com"
-  etag:               "" => "<computed>"
-  members.#:          "" => "1"
-  members.1333262347: "" => "serviceAccount:gocd-agent@devops-workshop-123.iam.gserviceaccount.com"
-  role:               "" => "roles/storage.admin"
-google_service_account_key.gocd_agent_svc_account_key: Creation complete after 1s (ID: projects/devops-workshop-123/serviceAcc...d821c6999a88bb14f898a78c5a2992fb675add)
-google_storage_bucket_iam_binding.gocd_agent_account_registry_iam: Creation complete after 6s (ID: us.artifacts.devops-workshop-123.appspot.com/roles/storage.admin)
-google_project_iam_binding.gocd_agent_account_container_iam: Creation complete after 6s (ID: devops-workshop-123/roles/container.admin)
-google_container_cluster.cluster: Still creating... (10s elapsed)
-google_container_cluster.cluster: Still creating... (20s elapsed)
-google_container_cluster.cluster: Still creating... (30s elapsed)
-google_container_cluster.cluster: Still creating... (40s elapsed)
-google_container_cluster.cluster: Still creating... (50s elapsed)
-google_container_cluster.cluster: Still creating... (1m0s elapsed)
-google_container_cluster.cluster: Still creating... (1m10s elapsed)
-google_container_cluster.cluster: Still creating... (1m20s elapsed)
-google_container_cluster.cluster: Still creating... (1m30s elapsed)
-google_container_cluster.cluster: Still creating... (1m40s elapsed)
-google_container_cluster.cluster: Still creating... (1m50s elapsed)
-google_container_cluster.cluster: Still creating... (2m0s elapsed)
-google_container_cluster.cluster: Still creating... (2m10s elapsed)
-google_container_cluster.cluster: Still creating... (2m20s elapsed)
-google_container_cluster.cluster: Creation complete after 2m22s (ID: devops-workshop-gke)
+google_project_iam_binding.gocd_agent_account_container_iam: Creating...
+google_service_account_key.gocd_agent_svc_account_key: Creating...
+google_service_account_key.gocd_agent_svc_account_key: Creation complete after 2s [id=projects/devops-workshop-123/serviceAccounts/gocd-agent@devops-workshop-123.iam.gserviceaccount.com/keys/e1ab3dff782925af8d217cf8f5f2a0387624f232]
+google_storage_bucket_iam_binding.gocd_agent_account_registry_iam: Creation complete after 5s [id=us.artifacts.devops-workshop-123.appspot.com/roles/storage.admin]
+google_container_cluster.cluster: Still creating... [10s elapsed]
+google_project_iam_binding.gocd_agent_account_container_iam: Still creating... [10s elapsed]
+google_project_iam_binding.gocd_agent_account_container_iam: Creation complete after 16s [id=devops-workshop-123/roles/container.admin]
+google_container_cluster.cluster: Still creating... [20s elapsed]
+google_container_cluster.cluster: Still creating... [30s elapsed]
+google_container_cluster.cluster: Still creating... [40s elapsed]
+google_container_cluster.cluster: Still creating... [50s elapsed]
+google_container_cluster.cluster: Still creating... [1m0s elapsed]
+google_container_cluster.cluster: Still creating... [1m10s elapsed]
+google_container_cluster.cluster: Still creating... [1m20s elapsed]
+google_container_cluster.cluster: Still creating... [1m30s elapsed]
+google_container_cluster.cluster: Still creating... [1m40s elapsed]
+google_container_cluster.cluster: Still creating... [1m50s elapsed]
+google_container_cluster.cluster: Still creating... [2m0s elapsed]
+google_container_cluster.cluster: Still creating... [2m10s elapsed]
+google_container_cluster.cluster: Still creating... [2m20s elapsed]
+google_container_cluster.cluster: Still creating... [2m30s elapsed]
+google_container_cluster.cluster: Still creating... [2m40s elapsed]
+google_container_cluster.cluster: Still creating... [2m50s elapsed]
+google_container_cluster.cluster: Still creating... [3m0s elapsed]
+google_container_cluster.cluster: Still creating... [3m10s elapsed]
+google_container_cluster.cluster: Still creating... [3m20s elapsed]
+google_container_cluster.cluster: Creation complete after 3m28s [id=devops-workshop-gke]
 
 Apply complete! Resources: 5 added, 0 changed, 0 destroyed.
 
 Outputs:
 
-service_account_key = ewogICJ0eXBl...9tIgp9Cg==
+service_account_key = ewogICJ0eXBl...NvbSIKfQo=
 ```
 
 Once the cluster is created, make sure you save the service account key output
