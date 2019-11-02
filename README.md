@@ -42,3 +42,13 @@ them.*
 
 I recommend you fork this project on GitHub before cloning to your machine, to
 allow you to make changes, commit them, and push to your own repository.
+
+If you need to update your fork with the latest changes from this repo, you can
+run from your local `master` branch:
+
+```shell
+$ git remote add upstream https://github.com/dtsato/devops-in-practice-workshop.git
+$ git fetch upstream
+$ git merge upstream/master
+$ git push origin master
+```
