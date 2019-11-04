@@ -19,7 +19,7 @@ Create a new file called `Dockerfile` at the root of the project, with the
 following content:
 
 ```Dockerfile
-FROM openjdk:11-oracle
+FROM openjdk:8-jdk-alpine
 ARG JAR_FILE
 
 ADD ${JAR_FILE} app.jar
@@ -41,7 +41,7 @@ argument, as well as the specified tag `pet-app`:
 ```shell
 $ docker build --tag=pet-app --build-arg JAR_FILE=target/spring-petclinic-2.0.0.BUILD-SNAPSHOT.jar .
 Sending build context to Docker daemon  49.94MB
-Step 1/4 : FROM openjdk:11-oracle
+Step 1/4 : FROM openjdk:8-jdk-alpine
  ---> 224765a6bdbe
 Step 2/4 : ARG JAR_FILE
  ---> Running in 0877d85ce6d9
