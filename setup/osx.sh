@@ -16,8 +16,8 @@ echo
 echo "Updating Homebrew..."
 brew update
 
-brew tap caskroom/cask
-brew tap caskroom/versions
+brew tap homebrew/cask
+# brew tap homebrew/versions
 
 if hash git 2>/dev/null; then
   echo "Git is already installed!"
@@ -44,7 +44,7 @@ if hash kubectl 2>/dev/null; then
   echo "Kubectl is already installed!"
 else
   echo "Installing kubectl..."
-  brew install kubectl
+  brew install kubernetes-cli
 fi
 
 if hash minikube 2>/dev/null; then

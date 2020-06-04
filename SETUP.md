@@ -12,14 +12,14 @@ instructions if you want to install them manually:
 
 * [Java](https://java.com/en/download/) 11+
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-* [Docker](https://docs.docker.com/install/) 18+
-* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) 1.9.4+
-* [VirtualBox](https://www.virtualbox.org/wiki/Downloads) 5.2+
+* [Docker](https://docs.docker.com/install/) 19+
+* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) 1.18.4+
+* [VirtualBox](https://www.virtualbox.org/wiki/Downloads) 6+
 * [Install minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
-0.30.0+
-* [helm](https://github.com/kubernetes/helm/blob/master/docs/install.md) 2.8+
-* [terraform](https://www.terraform.io/intro/getting-started/install.html) 0.11+
-* [Google Cloud SDK tools](https://cloud.google.com/sdk/downloads) 196+
+1.0+
+* [helm](https://github.com/kubernetes/helm/blob/master/docs/install.md) 3+
+* [terraform](https://www.terraform.io/intro/getting-started/install.html) 0.12+
+* [Google Cloud SDK tools](https://cloud.google.com/sdk/downloads) 277+
 
 ### Auto-Install on Mac OS X
 
@@ -34,24 +34,29 @@ section.
 
 ### Auto-Install on Windows
 
-*(This was tested on Windows 10)*
+*(This was tested on Windows 10 Pro)*
 
 I recommend installing [Git for Windows](https://gitforwindows.org), and use the
-Git Bash application for cloning the repository, executing the setup script, and
-going through the exercises of this workshop.
+Git Bash application for executing the setup script.
 
 Once installed, right-click the "Git Bash" icon on your desktop and select
 "Run as administrator", then click "Yes" on the popup that appears. Now you can
-clone de repository and you can execute the
-[`./setup-workstation.sh`](./setup-workstation.sh) script to install the
-required tools using [Chocolatey](https://chocolatey.org). After installation,
-you will need to restart your shell to add the path to the binaries to your
-`PATH`.
+run the setup script:
 
-Note: this setup will install Docker Toolbox, which allows running Docker on
-Windows using Docker-Machine on a VirtualBox VM. This requires virtualization
-features to be enabled. Once the install script completes and you restart your
-shell, run the following command to create the `docker-machine` VM:
+```
+powershell -Command "$(curl -fsSL https://raw.githubusercontent.com/dtsato/devops-in-practice-workshop/master/setup/windows.ps1)"
+```
+
+The script will install the required tools using
+[Chocolatey](https://chocolatey.org). After installation, you will need to
+restart your shell to add the path to the binaries to your `PATH`.
+
+Note: this setup will install Docker Desktop, which works on Windows 10 Pro and
+requires a machine restart. If you have a different version of Windows it might
+not work, and you will need to run Docker Toolbox, which runs Docker Machine on
+a VirtualBox VM. To install Docker Toolbox, run `choco install docker-toolbox`.
+Once the install script completes and you restart your shell, run the following
+command to create the `docker-machine` VM:
 
 ```shell
 $ docker-machine create -d virtualbox default
@@ -70,6 +75,9 @@ docker CLI client:
 ```shell
 $ eval $(docker-machine env default)
 ```
+
+Note 2: on Git-Bash, the `gcloud` command needs to be executed as `gcloud.cmd`.
+If you want, you can run `alias gcloud="gcloud.cmd"` to create an alias.
 
 Then you can continue to the
 [Google Cloud Platform Account Setup](#google-cloud-platform-account-setup)
@@ -114,5 +122,5 @@ can create a project for the workshop and name it "DevOps Workshop".
 2. **Maven Dependencies**: have Maven download all dependencies by running:
   * `./mvnw clean install`
 3. **Minikube VM**: ensure you have the minikube VirtualBox VM image by running:
-  * `minikube start --kubernetes-version v1.12.7 --memory 2048`
+  * `minikube start --vm-driver virtualbox --kubernetes-version v1.16.8 --memory 2048`
   * `minikube stop`

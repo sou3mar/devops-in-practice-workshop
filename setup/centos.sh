@@ -33,7 +33,7 @@ if hash javac 2>/dev/null; then
   echo "Java is already installed!"
 else
   echo "Installing Java..."
-  PACKAGES_TO_INSTALL+=" java-1.8.0-openjdk"
+  PACKAGES_TO_INSTALL+=" java-11-openjdk"
 fi
 
 if hash git 2>/dev/null; then
