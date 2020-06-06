@@ -23,7 +23,7 @@ GoCD environment
 ### Extracting and configuring the PetClinic Pipeline as Code
 
 First, let's export the current configuration to the YAML configuration format.
-Click on the "ADMIN" menu and select "Pipelines". Click on "Export using" for
+Click on the "ADMIN" menu and select "Pipelines". Click on "Download" icon for
 "PetClinc" pipeline and select the "YAML Configuration Plugin" option.
 tab. This will download a file called `PetClinic.gocd.yaml`, that you can move
 to the root of the project.
@@ -36,9 +36,9 @@ that will poll for changes and update the pipeline definitions when the YAML
 file changes. Click on the "ADMIN" menu and select "Config Repositories". Click
 the "Add" button and create the new configuration repository:
 
+* Config repository name: `sample`
 * Plugin ID: `YAML Configuration Plugin`
 * Material type: `Git`
-* Config repository ID: `sample`
 * URL: Same as before, use the Git URL for your repository
 * Branch: `master`
 

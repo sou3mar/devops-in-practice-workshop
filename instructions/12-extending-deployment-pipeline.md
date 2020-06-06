@@ -36,12 +36,13 @@ cat kubernetes/web.yml | sed "s/\(image: \).*$/\1us.gcr.io\/$PROJECT_ID\/pet-app
 ```
 
 Now let's configure a new Elastic Agent Profile in GoCD by visiting the "ADMIN"
-menu and clicking on "Elastic Profiles". We can then "+ Elastic Agent Profile"
-with the following configuration:
+menu and clicking on "Elastic Agent Configurations". We can then "+ Elastic
+Agent Profile" with the following configuration:
 
-* Id: `kubectl`
+* Elastic Profile Name: `kubectl`
 * Select the "Config Properties" option
-* Image: `dtsato/gocd-agent-docker-dind-gcloud-kubectl:v19.3.0`
+* Image: `dtsato/gocd-agent-docker-dind-gcloud-kubectl:v20.4.0`
+* Maximum Memory limit: `1G`
 * Privileged: checked
 
 Once the profile is saved, we can configure the new stage of our pipeline, by
@@ -58,7 +59,7 @@ following configuration (again adding a line break after the `-c` argument):
 Once again, we will need to configure the environment variables for the new
 `deploy` job:
 
-* Environment Variables:
+* Plain Text Variables:
   * `GCLOUD_CLUSTER=devops-workshop-gke`
   * `GCLOUD_ZONE=us-central1-a`
   * `GCLOUD_PROJECT_ID=devops-workshop-123`

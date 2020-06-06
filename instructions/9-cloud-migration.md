@@ -11,7 +11,7 @@
 
 * Add Terraform configuration files to a new `terraform` folder at the root of
 the project
-* Create a High Availability GKE cluster version `1.12.10-gke.15` across 2 zones in
+* Create a High Availability GKE cluster version `1.16.8-gke.15` across 2 zones in
 the `us-central1` region using 1 node per zone with instance type `n1-standard-2`
 (2 vCPUs, 7.5Gb memory)
 * Enable logging and monitoring to be sent to Stackdriver
@@ -120,11 +120,11 @@ variable "gcp_project_id" {
 }
 
 variable "kubernetes_version" {
-  default = "1.12.10-gke.15"
+  default = "1.16.8-gke.15"
 }
 
 provider "google" {
-  project      = "${var.gcp_project_id}"
+  project      = var.gcp_project_id
   region       = "us-central1"
 }
 
@@ -134,13 +134,13 @@ resource "google_container_cluster" "cluster" {
   node_locations = ["us-central1-b"]
   initial_node_count = 1
 
-  min_master_version = "${var.kubernetes_version}"
+  min_master_version = var.kubernetes_version
   master_auth {
     username = "admin"
     password = "choose-a-long-password"
   }
 
-  node_version = "${var.kubernetes_version}"
+  node_version = var.kubernetes_version
   node_config {
 	  machine_type = "n1-standard-2"
 	  disk_size_gb = "50"
@@ -148,13 +148,11 @@ resource "google_container_cluster" "cluster" {
     oauth_scopes = [
   	  "https://www.googleapis.com/auth/compute",
   	  "https://www.googleapis.com/auth/devstorage.read_write",
-      "https://www.googleapis.com/auth/logging.write",
-      "https://www.googleapis.com/auth/monitoring"
     ]
   }
 
-  logging_service = "logging.googleapis.com"
-  monitoring_service = "monitoring.googleapis.com"
+  logging_service    = "logging.googleapis.com/kubernetes"
+  monitoring_service = "monitoring.googleapis.com/kubernetes"
 }
 
 resource "google_service_account" "gocd_agent_svc_account" {
@@ -162,7 +160,7 @@ resource "google_service_account" "gocd_agent_svc_account" {
 }
 
 resource "google_service_account_key" "gocd_agent_svc_account_key" {
-  service_account_id = "${google_service_account.gocd_agent_svc_account.name}"
+  service_account_id = google_service_account.gocd_agent_svc_account.name
 }
 
 resource "google_storage_bucket_iam_binding" "gocd_agent_account_registry_iam" {
@@ -175,7 +173,7 @@ resource "google_storage_bucket_iam_binding" "gocd_agent_account_registry_iam" {
 }
 
 resource "google_project_iam_binding" "gocd_agent_account_container_iam" {
-  project = "${var.gcp_project_id}"
+  project = var.gcp_project_id
   role   = "roles/container.admin"
 
   members = [
@@ -184,7 +182,7 @@ resource "google_project_iam_binding" "gocd_agent_account_container_iam" {
 }
 
 output "service_account_key" {
-  value = "${google_service_account_key.gocd_agent_svc_account_key.private_key}"
+  value = google_service_account_key.gocd_agent_svc_account_key.private_key
 }
 ```
 
@@ -223,7 +221,6 @@ the `terraform apply` command (this can take a few minutes):
 
 ```shell
 $ terraform apply terraform/
-
 An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
   + create
@@ -246,16 +243,16 @@ Terraform will perform the following actions:
       + instance_group_urls         = (known after apply)
       + ip_allocation_policy        = (known after apply)
       + location                    = "us-central1-a"
-      + logging_service             = "logging.googleapis.com"
+      + logging_service             = "logging.googleapis.com/kubernetes"
       + master_version              = (known after apply)
-      + min_master_version          = "1.12.10-gke.15"
-      + monitoring_service          = "monitoring.googleapis.com"
+      + min_master_version          = "1.16.8-gke.15"
+      + monitoring_service          = "monitoring.googleapis.com/kubernetes"
       + name                        = "devops-workshop-gke"
       + network                     = "default"
       + node_locations              = [
           + "us-central1-b",
         ]
-      + node_version                = "1.12.10-gke.15"
+      + node_version                = "1.16.8-gke.15"
       + project                     = (known after apply)
       + region                      = (known after apply)
       + services_ipv4_cidr          = (known after apply)
@@ -309,8 +306,6 @@ Terraform will perform the following actions:
           + oauth_scopes      = [
               + "https://www.googleapis.com/auth/compute",
               + "https://www.googleapis.com/auth/devstorage.read_write",
-              + "https://www.googleapis.com/auth/logging.write",
-              + "https://www.googleapis.com/auth/monitoring",
             ]
           + preemptible       = false
           + service_account   = (known after apply)
@@ -435,15 +430,15 @@ Do you want to perform these actions?
 
 google_service_account.gocd_agent_svc_account: Creating...
 google_container_cluster.cluster: Creating...
-google_service_account.gocd_agent_svc_account: Creation complete after 2s [id=projects/devops-workshop-123/serviceAccounts/gocd-agent@devops-workshop-123.iam.gserviceaccount.com]
-google_storage_bucket_iam_binding.gocd_agent_account_registry_iam: Creating...
+google_service_account.gocd_agent_svc_account: Creation complete after 3s [id=projects/devops-workshop-123/serviceAccounts/gocd-agent@devops-workshop-123.iam.gserviceaccount.com]
 google_project_iam_binding.gocd_agent_account_container_iam: Creating...
+google_storage_bucket_iam_binding.gocd_agent_account_registry_iam: Creating...
 google_service_account_key.gocd_agent_svc_account_key: Creating...
-google_service_account_key.gocd_agent_svc_account_key: Creation complete after 2s [id=projects/devops-workshop-123/serviceAccounts/gocd-agent@devops-workshop-123.iam.gserviceaccount.com/keys/e1ab3dff782925af8d217cf8f5f2a0387624f232]
+google_service_account_key.gocd_agent_svc_account_key: Creation complete after 1s [id=projects/devops-workshop-123/serviceAccounts/gocd-agent@devops-workshop-123.iam.gserviceaccount.com/keys/3c6bd5942fa286815c4a336bf7ba1b651233144d]
 google_storage_bucket_iam_binding.gocd_agent_account_registry_iam: Creation complete after 5s [id=us.artifacts.devops-workshop-123.appspot.com/roles/storage.admin]
 google_container_cluster.cluster: Still creating... [10s elapsed]
 google_project_iam_binding.gocd_agent_account_container_iam: Still creating... [10s elapsed]
-google_project_iam_binding.gocd_agent_account_container_iam: Creation complete after 16s [id=devops-workshop-123/roles/container.admin]
+google_project_iam_binding.gocd_agent_account_container_iam: Creation complete after 15s [id=devops-workshop-123/roles/container.admin]
 google_container_cluster.cluster: Still creating... [20s elapsed]
 google_container_cluster.cluster: Still creating... [30s elapsed]
 google_container_cluster.cluster: Still creating... [40s elapsed]
@@ -451,25 +446,20 @@ google_container_cluster.cluster: Still creating... [50s elapsed]
 google_container_cluster.cluster: Still creating... [1m0s elapsed]
 google_container_cluster.cluster: Still creating... [1m10s elapsed]
 google_container_cluster.cluster: Still creating... [1m20s elapsed]
-google_container_cluster.cluster: Still creating... [1m30s elapsed]
-google_container_cluster.cluster: Still creating... [1m40s elapsed]
-google_container_cluster.cluster: Still creating... [1m50s elapsed]
-google_container_cluster.cluster: Still creating... [2m0s elapsed]
-google_container_cluster.cluster: Still creating... [2m10s elapsed]
-google_container_cluster.cluster: Still creating... [2m20s elapsed]
-google_container_cluster.cluster: Still creating... [2m30s elapsed]
-google_container_cluster.cluster: Still creating... [2m40s elapsed]
-google_container_cluster.cluster: Still creating... [2m50s elapsed]
-google_container_cluster.cluster: Still creating... [3m0s elapsed]
-google_container_cluster.cluster: Still creating... [3m10s elapsed]
-google_container_cluster.cluster: Still creating... [3m20s elapsed]
-google_container_cluster.cluster: Creation complete after 3m28s [id=devops-workshop-gke]
+google_container_cluster.cluster: Still creating... [1m31s elapsed]
+google_container_cluster.cluster: Still creating... [1m41s elapsed]
+google_container_cluster.cluster: Still creating... [1m51s elapsed]
+google_container_cluster.cluster: Still creating... [2m1s elapsed]
+google_container_cluster.cluster: Still creating... [2m11s elapsed]
+google_container_cluster.cluster: Still creating... [2m21s elapsed]
+google_container_cluster.cluster: Still creating... [2m31s elapsed]
+google_container_cluster.cluster: Creation complete after 2m34s [id=devops-workshop-gke]
 
 Apply complete! Resources: 5 added, 0 changed, 0 destroyed.
 
 Outputs:
 
-service_account_key = ewogICJ0eXBl...NvbSIKfQo=
+service_account_key = ewogICJ0eXBlIjogInNlcnZpY2VfYWNj...QuY29tIgp9Cg==
 ```
 
 Once the cluster is created, make sure you save the service account key output
