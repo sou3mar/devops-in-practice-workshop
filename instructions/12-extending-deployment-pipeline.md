@@ -48,7 +48,7 @@ Agent Profile" with the following configuration:
 Once the profile is saved, we can configure the new stage of our pipeline, by
 going to the "ADMIN" menu, clicking "Pipelines", and opening the "PetClinic"
 pipeline. Opening the "Stages" tab, we can create the new stage with the
-following configuration (again adding a line break after the `-c` argument):
+following configuration (adding a line break after the `-c` argument):
 
 * Stage name: `deploy`
 * Initial job name: `deploy`
@@ -70,7 +70,8 @@ Remember to replace the project ID and the `GCLOUD_SERVICE_KEY` variables with
 the same values used previously. We also need to go to the "Job Settings" tab
 and configure the Elastic Profile Id to `kubectl`.
 
-We can go back to the "Tasks" tab and add the other tasks:
+We can go back to the "Tasks" tab and add the other tasks (add a line break
+after each `-c` argument):
 
 * Activate service account:
   * Command: `bash`
