@@ -29,7 +29,7 @@ tab. This will download a file called `PetClinic.gocd.yaml`, that you can move
 to the root of the project.
 
 Fix some of the formatting on the file to make sure all the tasks are defined in
-a single line. Also update the `format_version` to version `4`.
+a single line. Also update the `format_version` to version `9`.
 
 In order to use this file, we need to create a new Configuration Repository,
 that will poll for changes and update the pipeline definitions when the YAML
@@ -41,6 +41,8 @@ the "Add" button and create the new configuration repository:
 * Material type: `Git`
 * URL: Same as before, use the Git URL for your repository
 * Branch: `master`
+* Rules: Click on "+ New Permission", and choose "Allow" for "Pipeline Group"
+and type `sample`
 
 Once again, you can test by clicking on "Test Connection" before proceeding
 with clicking "Save".

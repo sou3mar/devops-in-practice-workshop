@@ -1,4 +1,4 @@
-format_version: 4
+format_version: 9
 pipelines:
   PetClinic:
     group: sample
