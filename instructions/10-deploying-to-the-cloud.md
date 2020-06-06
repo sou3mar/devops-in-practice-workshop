@@ -116,15 +116,25 @@ spec:
 ...
 ```
 
+Let's also update our `deploy.sh` script, to ensure it will deploy to the
+correct namespace:
+
+```shell
+#!/usr/bin/env bash
+set -xe
+kubectl apply -f kubernetes/mysql.yml --namespace default
+kubectl apply -f kubernetes/web.yml --namespace default
+```
+
 Now let's re-deploy our application stack:
 
 ```shell
 $ ./deploy.sh
-+ kubectl apply -f kubernetes/mysql.yml
++ kubectl apply -f kubernetes/mysql.yml --namespace default
 service "pet-db" created
 persistentvolumeclaim "db-pv-claim" created
 deployment "pet-db" created
-+ kubectl apply -f kubernetes/web.yml
++ kubectl apply -f kubernetes/web.yml --namespace default
 service "pet-web" created
 deployment "pet-web" created
 ```
