@@ -35,48 +35,31 @@ pipelines:
             tasks:
             - exec:
                 arguments:
-                - clean
-                - package
+                - clean package
                 command: ./mvnw
                 run_if: passed
             - exec:
                 arguments:
                 - -c
-                - docker
-                - build
-                - --tag
-                - pet-app:$GO_PIPELINE_LABEL
-                - --build-arg
-                - JAR_FILE=target/spring-petclinic-2.0.0.BUILD-SNAPSHOT.jar
-                - .
+                - docker build --tag pet-app:$GO_PIPELINE_LABEL --build-arg JAR_FILE=target/spring-petclinic-2.0.0.BUILD-SNAPSHOT.jar .
                 command: bash
                 run_if: passed
             - exec:
                 arguments:
                 - -c
-                - docker
-                - login
-                - -u
-                - _json_key
-                - -p$(echo $GCLOUD_SERVICE_KEY | base64 -d)
-                - https://us.gcr.io
+                - docker login -u _json_key -p$(echo $GCLOUD_SERVICE_KEY | base64 -d) https://us.gcr.io
                 command: bash
                 run_if: passed
             - exec:
                 arguments:
                 - -c
-                - docker
-                - tag
-                - pet-app:$GO_PIPELINE_LABEL
-                - us.gcr.io/$GCLOUD_PROJECT_ID/pet-app:$GO_PIPELINE_LABEL
+                - docker tag pet-app:$GO_PIPELINE_LABEL us.gcr.io/$GCLOUD_PROJECT_ID/pet-app:$GO_PIPELINE_LABEL
                 command: bash
                 run_if: passed
             - exec:
                 arguments:
                 - -c
-                - docker
-                - push
-                - us.gcr.io/$GCLOUD_PROJECT_ID/pet-app:$GO_PIPELINE_LABEL
+                - docker push us.gcr.io/$GCLOUD_PROJECT_ID/pet-app:$GO_PIPELINE_LABEL
                 command: bash
                 run_if: passed
     - deploy:
