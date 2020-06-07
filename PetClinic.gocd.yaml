@@ -38,6 +38,7 @@ pipelines:
             artifacts:
             - test:
                 source: target/surefire-reports
+                destination: test-reports
             tasks:
             - exec:
                 arguments:
@@ -106,4 +107,42 @@ pipelines:
                 arguments:
                 - secret.json
                 command: rm
+                run_if: passed
+    - approve-canary:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: manual
+        jobs:
+          complete-canary:
+            timeout: 0
+            elastic_profile_id: kubectl
+            tasks:
+            - exec:
+                arguments:
+                - -c
+                - echo $GCLOUD_SERVICE_KEY | base64 -d > secret.json && chmod 600 secret.json
+                command: bash
+                run_if: passed
+            - exec:
+                arguments:
+                - -c
+                - gcloud auth activate-service-account --key-file secret.json
+                command: bash
+                run_if: passed
+            - exec:
+                arguments:
+                - -c
+                - gcloud container clusters get-credentials $GCLOUD_CLUSTER --zone $GCLOUD_ZONE --project $GCLOUD_PROJECT_ID
+                command: bash
+                run_if: passed
+            - exec:
+                command: ./complete-canary.sh
+                run_if: passed
+            - exec:
+                arguments:
+                - -c
+                - rm secret.json
+                command: bash
                 run_if: passed
