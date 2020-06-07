@@ -119,10 +119,10 @@ one task for each line (without the leading `$` character):
 
 ```bash
 $ ./mvnw clean package
-$ bash -c docker build --tag pet-app:$GO_PIPELINE_LABEL --build-arg JAR_FILE=target/spring-petclinic-2.0.0.BUILD-SNAPSHOT.jar .
-$ bash -c docker login -u _json_key -p"$(echo $GCLOUD_SERVICE_KEY | base64 -d)" https://us.gcr.io
-$ bash -c docker tag pet-app:$GO_PIPELINE_LABEL us.gcr.io/$GCLOUD_PROJECT_ID/pet-app:$GO_PIPELINE_LABEL
-$ bash -c docker push us.gcr.io/$GCLOUD_PROJECT_ID/pet-app:$GO_PIPELINE_LABEL
+$ bash -c "docker build --tag pet-app:$GO_PIPELINE_LABEL --build-arg JAR_FILE=target/spring-petclinic-2.0.0.BUILD-SNAPSHOT.jar ."
+$ bash -c "docker login -u _json_key -p\"$(echo $GCLOUD_SERVICE_KEY | base64 -d)\" https://us.gcr.io"
+$ bash -c "docker tag pet-app:$GO_PIPELINE_LABEL us.gcr.io/$GCLOUD_PROJECT_ID/pet-app:$GO_PIPELINE_LABEL"
+$ bash -c "docker push us.gcr.io/$GCLOUD_PROJECT_ID/pet-app:$GO_PIPELINE_LABEL"
 ```
 
 You might have noticed that we are referencing a few environment variables in
