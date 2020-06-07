@@ -112,7 +112,12 @@ environments:
 Also, make sure to remove those common environment variables and secret
 variables from the stages and jobs to avoid the duplication.
 
-Once again, when you commit and push these changes, the YAML configuration
-plugin should pick up the changes and trigger a new pipeline execution, where
-you can check that the test results are now available after a successful
-pipeline run.
+Because we are creating a new environment, we need to update our config
+repository rule to allow that. Click on "ADMIN" and "Config Repositories", then
+edit the `sample` config repository. At the end of the screen, click on "+ New
+Permission", and "Allow" the "Environment" called `gcp`. Then click "Save".
+
+Once the config repository is updated, you can commit and push these changes.
+The YAML configuration plugin should pick up the changes and trigger a new
+pipeline execution, where you can check that the test results are now available
+after a successful pipeline run.
