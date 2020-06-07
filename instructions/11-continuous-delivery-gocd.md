@@ -108,7 +108,7 @@ new pipeline" will take us to the pipeline creation wizard.
 
 In Part 1, we will configure our material type to use a "Git" repository, point
 it to your Github repository URL and branch - in this case
-https://github.com/dtsato/devops-in-practice-workshop.git and `master`. You can
+https://github.com/dtsato/devops-in-practice-workshop.git and `devops-west-20`. You can
 test the connection is configured properly by clicking the "Test Connection"
 button. In Part 2, we will provide the name "PetClinic".
 

@@ -40,7 +40,7 @@ the "Add" button and create the new configuration repository:
 * Plugin ID: `YAML Configuration Plugin`
 * Material type: `Git`
 * URL: Same as before, use the Git URL for your repository
-* Branch: `master`
+* Branch: `devops-west-20`
 * GoCD YAML files pattern: `**/*.gocd.yaml`
 * Rules: Click on "+ New Permission", and choose "Allow" for "Pipeline Group"
 and type `sample`
