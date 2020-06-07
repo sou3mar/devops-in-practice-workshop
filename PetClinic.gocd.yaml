@@ -48,7 +48,7 @@ pipelines:
             - exec:
                 arguments:
                 - -c
-                - docker login -u _json_key -p$(echo $GCLOUD_SERVICE_KEY | base64 -d) https://us.gcr.io
+                - docker login -u _json_key -p"$(echo $GCLOUD_SERVICE_KEY | base64 -d)" https://us.gcr.io
                 command: bash
                 run_if: passed
             - exec:
