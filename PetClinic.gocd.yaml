@@ -35,7 +35,8 @@ pipelines:
             tasks:
             - exec:
                 arguments:
-                - clean package
+                - clean
+                - package
                 command: ./mvnw
                 run_if: passed
             - exec:
