@@ -83,6 +83,7 @@ jobs:
     artifacts:
       - test:
           source: target/surefire-reports
+          destination: test-reports
     tasks:
 ...
 ```
