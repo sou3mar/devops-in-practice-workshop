@@ -1,0 +1,105 @@
+format_version: 9
+pipelines:
+  PetClinic:
+    group: sample
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    materials:
+      git:
+        git: https://github.com/dtsato/devops-in-practice-workshop.git
+        shallow_clone: false
+        auto_update: true
+        branch: tw-jun-20
+    stages:
+    - commit:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          build-and-publish:
+            timeout: 0
+            environment_variables:
+              MAVEN_OPTS: -Xmx1024m
+              GCLOUD_PROJECT_ID: devops-workshop-123
+            secure_variables:
+              GCLOUD_SERVICE_KEY: AES:tKi1x1bU/8oTc7qhVLPlVg==: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
+            elastic_profile_id: docker-jdk
+            tasks:
+            - exec:
+                arguments:
+                - clean
+                - package
+                command: ./mvnw
+                run_if: passed
+            - exec:
+                arguments:
+                - -c
+                - docker build --tag pet-app:$GO_PIPELINE_LABEL --build-arg JAR_FILE=target/spring-petclinic-2.0.0.BUILD-SNAPSHOT.jar .
+                command: bash
+                run_if: passed
+            - exec:
+                arguments:
+                - -c
+                - docker login -u _json_key -p"$(echo $GCLOUD_SERVICE_KEY | base64 -d)" https://us.gcr.io
+                command: bash
+                run_if: passed
+            - exec:
+                arguments:
+                - -c
+                - docker tag pet-app:$GO_PIPELINE_LABEL us.gcr.io/$GCLOUD_PROJECT_ID/pet-app:$GO_PIPELINE_LABEL
+                command: bash
+                run_if: passed
+            - exec:
+                arguments:
+                - -c
+                - docker push us.gcr.io/$GCLOUD_PROJECT_ID/pet-app:$GO_PIPELINE_LABEL
+                command: bash
+                run_if: passed
+    - deploy:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          deploy:
+            timeout: 0
+            environment_variables:
+              GCLOUD_CLUSTER: devops-workshop-gke
+              GCLOUD_ZONE: us-central1-a
+              GCLOUD_PROJECT_ID: devops-workshop-123
+            secure_variables:
+              GCLOUD_SERVICE_KEY: AES:yqHdgqakGhL/x/cTIctc1w==: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
+            elastic_profile_id: kubectl
+            tasks:
+            - exec:
+                arguments:
+                - -c
+                - echo $GCLOUD_SERVICE_KEY | base64 -d > secret.json && chmod 600 secret.json
+                command: bash
+                run_if: passed
+            - exec:
+                arguments:
+                - -c
+                - gcloud auth activate-service-account --key-file secret.json
+                command: bash
+                run_if: passed
+            - exec:
+                arguments:
+                - -c
+                - gcloud container clusters get-credentials $GCLOUD_CLUSTER --zone $GCLOUD_ZONE --project $GCLOUD_PROJECT_ID
+                command: bash
+                run_if: passed
+            - exec:
+                command: ./deploy.sh
+                run_if: passed
+            - exec:
+                arguments:
+                - secret.json
+                command: rm
+                run_if: passed
