@@ -177,6 +177,10 @@ the definition of the `deploy` stage:
 ```
 
 Commit and push the changes and wait until GoCD is updated. Once the pipeline is
-updated with the new stage, it will trigger a new execution.You should see it
-deploy the new version as a canary release. Then you can test a manual approval
-to complete the release.
+updated with the new stage, it will fail because the config repository won't
+allow the new `gcp` environment to be created. We need to create a rule to allow
+it. Click on "ADMIN" and select "Config Repositories", then click the edit icon
+for the `sample` configuration. Click on "+ New Permission" and create a new
+rule to "Allow" the "Environment" called `gcp`. Once you hit "Save" and trigger
+a new execution, you should see it deploy the new version as a canary release.
+Then you can test a manual approval to complete the release.
