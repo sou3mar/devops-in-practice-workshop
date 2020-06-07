@@ -41,6 +41,7 @@ the "Add" button and create the new configuration repository:
 * Material type: `Git`
 * URL: Same as before, use the Git URL for your repository
 * Branch: `master`
+* GoCD YAML files pattern: `**/*.gocd.yaml`
 * Rules: Click on "+ New Permission", and choose "Allow" for "Pipeline Group"
 and type `sample`
 
