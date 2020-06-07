@@ -93,7 +93,7 @@ file, copying the values of the variables from one of the stages/jobs
 (make sure the `GCLOUD_PROJECT_ID` and `GCLOUD_SERVICE_KEY` are yours):
 
 ```yaml
-format_version: 4
+format_version: 9
 environments:
   gcp:
     environment_variables:
