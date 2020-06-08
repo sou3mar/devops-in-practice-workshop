@@ -11,4 +11,4 @@ echo "Current version: $CURRENT_VERSION"
 echo "Deploying pet-web canary image version: $IMAGE_VERSION"
 
 cat kubernetes/web.yml | sed "s/\(image: \).*$/\1us.gcr.io\/$PROJECT_ID\/pet-app:$CURRENT_VERSION/" | kubectl apply -f - --namespace default
-cat kubernetes/web-canary.yml | sed "s/\(image: \).*$/\1us.gcr.io\/$PROJECT_ID\/pet-app:$IMAGE_VERSION/" 
+cat kubernetes/web-canary.yml | sed "s/\(image: \).*$/\1us.gcr.io\/$PROJECT_ID\/pet-app:$IMAGE_VERSION/" | kubectl apply -f - --namespace default
