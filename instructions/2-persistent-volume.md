@@ -26,8 +26,10 @@ environment variables to create a new database, user, and password:
 
 ```shell
 $ mkdir data
-$ docker run -d --name pet-db -v $PWD/data:/var/lib/mysql -e MYSQL_RANDOM_ROOT_PASSWORD=yes -e MYSQL_DATABASE=petclinic -e MYSQL_USER=petclinic-user -e MYSQL_PASSWORD=S3cr3t mysql:5.7
+$ docker run -d --name pet-db -v $PWD/data:/var/lib/mysql -e MYSQL_RANDOM_ROOT_PASSWORD=yes -e MYSQL_DATABASE=petclinic -e MYSQL_USER=petclinic-user -e MYSQL_PASSWORD=S3cr3t mysql:5.7 
 ```
+
+Note: If you are on Windows 10 Home with Docker Toolbox and get an error trying to initialize InnoDB, please try adding `--innodb-use-native-aio=false` argument at the end of the `docker run` command
 
 Now we will create a user-defined network for the containers to be able to
 connect to each other, and attach the running MySQL container to the network:
