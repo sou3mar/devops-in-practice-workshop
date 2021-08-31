@@ -30,14 +30,14 @@ if hash VBoxManage 2>/dev/null; then
   echo "VirtualBox is already installed!"
 else
   echo "Installing VirtualBox..."
-  brew cask install virtualbox
+  brew install --cask virtualbox
 fi
 
 if hash docker 2>/dev/null; then
   echo "Docker is already installed!"
 else
   echo "Installing Docker for Mac..."
-  brew cask install docker
+  brew install docker
 fi
 
 if hash kubectl 2>/dev/null; then
@@ -72,5 +72,5 @@ if hash gcloud 2>/dev/null; then
   echo "Google Cloud SDK is already installed!"
 else
   echo "Installing Google Cloud SDK..."
-  brew cask install google-cloud-sdk
+  brew install --cask google-cloud-sdk
 fi
