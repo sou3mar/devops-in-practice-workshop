@@ -7,3 +7,18 @@ Exercise #0: https://github.com/dtsato/devops-in-practice-workshop/blob/master/i
 $ ./mvnw clean install
 $ ./mvnw spring-boot:run
 Visit: http://localhost:8080/
+
+Exercise #1: https://github.com/dtsato/devops-in-practice-workshop/blob/master/instructions/1-docker.md
+Docker Installation: https://docs.docker.com/desktop/windows/install/
+
+$ ls target/*.jar
+Path: target/spring-petclinic-2.0.0.BUILD-SNAPSHOT.jar
+
+$ docker build --tag=pet-app --build-arg JAR_FILE=spring-petclinic-2.0.0.BUILD-SNAPSHOT.jar .
+$ docker image ls pet*
+$ docker run --name=pet-app-prod -d -p 8080:8080 pet-app
+Visit: http://localhost:8080/
+$ docker logs -f pet-app-prod
+$ docker ps
+$ docker stop pet-app-prod
+$ docker rm pet-app-prod

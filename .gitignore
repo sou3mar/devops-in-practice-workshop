@@ -1,10 +1,11 @@
 target/*
+!target/Dockerfile
+!target/spring-petclinic-2.0.0.BUILD-SNAPSHOT.jar
 .settings/*
 .classpath
 .project
 .idea
 *.iml
-/target
 .sts4-cache/
 .vscode/*
 !.vscode/settings.json
