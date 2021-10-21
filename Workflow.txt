@@ -1,0 +1,9 @@
+Fork repository: https://github.com/dtsato/devops-in-practice-workshop
+
+Clone repository: https://github.com/sou3mar/devops-in-practice-workshop.git
+$ git clone https://github.com/sou3mar/devops-in-practice-workshop.git
+
+Exercise #0: https://github.com/dtsato/devops-in-practice-workshop/blob/master/instructions/0-build-and-run-local.md
+$ ./mvnw clean install
+$ ./mvnw spring-boot:run
+Visit: http://localhost:8080/
