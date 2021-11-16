@@ -22,3 +22,6 @@ $ docker logs -f pet-app-prod
 $ docker ps
 $ docker stop pet-app-prod
 $ docker rm pet-app-prod
+
+Exercise #4:
+$ minikube start --driver docker --kubernetes-version v1.16.8 --cpus 4 --memory 1984

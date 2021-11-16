@@ -1,0 +1,34 @@
+version: '3.7'
+
+networks:
+  pet-net:
+    driver: bridge
+
+services:
+  pet-app:
+    build:
+      context: .
+      args:
+        JAR_FILE: "./target/spring-petclinic-2.0.0.BUILD-SNAPSHOT.jar"
+    image: pet-app
+    ports:
+      - "8080:8080"
+    networks:
+      - pet-net
+    depends_on:
+      - pet-db
+    environment:
+      SPRING_PROFILES_ACTIVE: "mysql"
+  pet-db:
+    image: mysql:5.7
+    expose:
+      - 3306
+    networks:
+      - pet-net
+    volumes:
+      - ./data:/var/lib/mysql
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: "petclinic"
+      MYSQL_USER: "petclinic-user"
+      MYSQL_PASSWORD: "S3cr3t"
